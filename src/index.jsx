@@ -230,7 +230,11 @@ class OSDAnnotorious {
   
   setAnnotations = annotations => {
     const safe = annotations || []; // Allow null for clearning all current annotations
-    const webannotations = safe.map(a => new WebAnnotation(a));
+    const webannotations = safe.map(a => {
+			const readOnly = a.readOnly;
+			delete a.readOnly;
+			return new WebAnnotation(a, {readOnly})
+		});
     this._app.current.setAnnotations(webannotations);
   }
 
